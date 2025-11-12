@@ -61,7 +61,6 @@ const HomePage = () => {
 
   return (
     <>
-      <h2 className="mt-10">Todo List: {toast.length}</h2>
       <NewTask addTask={addTask} />
       {loading ? (
         <Spinner />
