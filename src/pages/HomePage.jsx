@@ -1,4 +1,4 @@
-import {useState } from "react";
+import React, { useEffect, useState } from "react";
 import NewTask from "../components/NewTask";
 import TodoItem from "../components/TodoItem";
 import Spinner from "../components/Spinner";
@@ -40,6 +40,24 @@ const HomePage = () => {
   };
 
 
+  //API
+  const [users, setUsers] = useState([])
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        setLoading(true)
+        const res = await fetch("https://jsonplaceholder.typicode.com/todos")
+        const data = await res.json()
+        setUsers(data)
+      } catch (error) {
+        console.log("Error", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    getData()
+  }, [])
 
   return (
     <>
@@ -62,6 +80,18 @@ const HomePage = () => {
           </ul>
         )
       )}
+
+      <h2 className="mt-10">API: {users.length}</h2>
+      <ul className="grid grid-cols-2 gap-2">
+        {loading ? (<Spinner className="m-auto" />) : users.map((item, index) => (
+          <li className="flex gap-4 border border-gray-300 shadow-sm p-4 rounded-md" key={index}>
+            <div className="">{item.id}.</div>
+            <div className="">{item.title}</div>
+          </li>
+        )
+        )}
+
+      </ul>
     </>
   );
 };
